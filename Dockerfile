@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY . /app
 
-RUN yarn install --ignore-optional --offline
+RUN yarn install --freeze-lockfile --ignore-optional
 
 EXPOSE 8080
 
