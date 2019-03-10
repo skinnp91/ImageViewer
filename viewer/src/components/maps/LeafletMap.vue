@@ -43,7 +43,7 @@ export default {
     },
   },
   mounted() {
-    this.initMap(this.$props.mapId);
+    this.initMap();
     this.initLayers();
     this.addData();
   },
@@ -55,8 +55,8 @@ export default {
     };
   },
   methods: {
-    initMap(elID) {
-      this.map = L.map(elID, {
+    initMap() {
+      this.map = L.map(this.$props.mapId, {
         crs: L.CRS.Simple,
         minZoom: -1,
         zoomSnap: 0.01,
