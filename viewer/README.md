@@ -1,4 +1,4 @@
-# src
+# Image Viewer Container
 
 ## Project setup
 ```

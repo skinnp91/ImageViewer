@@ -1,20 +1,19 @@
 <template>
   <div id="app">
-    <LeafletMap />
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="map-flex-wrapper">
+      <MapWrapper title="Leaflet Map" mapType="LeafletMap" mapId="leaflet-map" />
+      <MapWrapper title="OSD Map (Not Yet Implemented)" mapType="OSDMap" mapId="osd-map" />
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
-import LeafletMap from '@/components/LeafletMap.vue';
+import MapWrapper from '@/components/MapWrapper.vue';
 
 export default {
   name: 'app',
   components: {
-    HelloWorld,
-    LeafletMap,
+    MapWrapper,
   },
 };
 </script>
@@ -27,5 +26,14 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.map-flex-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-content: space-between;
+  width: 100%;
 }
 </style>
