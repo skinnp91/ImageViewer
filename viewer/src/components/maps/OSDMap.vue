@@ -4,38 +4,21 @@
 </template>
 
 <script>
-/** Leaflet Library */
-import 'leaflet/dist/leaflet.css';
-import * as L from 'leaflet';
+/** OpenSeadragon Libraries */
+import OpenSeadragon from 'openseadragon';
+import paper from 'paper';
 
 /** Test data */
 import moon from '@/../data/images/moon.jpg';
-import regions from '@/../data/json/regions.json';
+// import regions from '@/../data/json/regions.json';
 import points from '@/../data/json/points.json';
 
-const geojsonMarkerOptions = {
-  radius: 8,
-  fillColor: '#ff7800',
-  color: '#000',
-  weight: 1,
-  opacity: 1,
-  fillOpacity: 0.8,
-};
-
-const jsonOptions = {
-  pointToLayer(feature, latlng) {
-    return L.circleMarker(latlng, geojsonMarkerOptions);
-  },
-  onEachFeature(feature, layer) {
-    // does this feature have a property named popupContent?
-    if (feature.properties && feature.properties.description) {
-      layer.bindPopup(feature.properties.description);
-    }
-  },
+const OSDoptions = {
+  showNavigationControl: false,
 };
 
 export default {
-  name: 'LeafletMap',
+  name: 'OSDMap',
   props: {
     mapId: {
       type: String,
@@ -43,35 +26,43 @@ export default {
     },
   },
   mounted() {
-    this.initMap(this.$props.mapId);
+    this.initMap();
     this.initLayers();
-    this.addData();
+    // this.addData();
   },
   data() {
     return {
       map: null,
       imageLayer: null,
       jsonLayer: null,
+      features: [],
     };
   },
   methods: {
-    initMap(elID) {
-      this.map = L.map(elID, {
-        crs: L.CRS.Simple,
-        minZoom: -1,
-        zoomSnap: 0.01,
-        zoomDelta: 1,
+    initMap() {
+      this.map = OpenSeadragon({
+        id: this.$props.mapId,
+        ...OSDoptions,
       });
     },
     initLayers() {
-      const bounds = [[0, 0], [1000, 1000]];
-      this.imageLayer = L.imageOverlay(moon, bounds).addTo(this.map);
-      this.jsonLayer = L.geoJSON(null, jsonOptions).addTo(this.map);
-      this.map.fitBounds(bounds);
+      this.map.addSimpleImage({ url: moon });
+      // this.jsonLayer = this.map.paperjsOverlay();
+      window.onresize = () => {
+        this.jsonLayer.resize();
+        this.jsonLayer.resizecanvas();
+      };
     },
     addData() {
-      this.jsonLayer.addData(regions);
-      this.jsonLayer.addData(points);
+      const pointRadius = 100;
+      points.features.forEach((feature) => {
+        this.features.push(new paper.Path.Circle(
+          new paper.Point(
+            feature.geometry.coordinates[1], feature.geometry.coordinates[0],
+          ),
+          pointRadius,
+        ));
+      });
     },
   },
 };

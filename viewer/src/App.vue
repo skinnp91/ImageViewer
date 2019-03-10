@@ -2,7 +2,7 @@
   <div id="app">
     <div class="map-flex-wrapper">
       <MapWrapper title="Leaflet Map" mapType="LeafletMap" mapId="leaflet-map" />
-      <MapWrapper title="OSD Map (Not Yet Implemented)" mapType="OSDMap" mapId="osd-map" />
+      <MapWrapper title="OSD Map (PaperJS overlay WIP)" mapType="OSDMap" mapId="osd-map" />
     </div>
   </div>
 </template>
